@@ -1,165 +1,206 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
-    <head>
-        <link rel="stylesheet" type="text/css" href="./css/style.css">
-        <link href="./css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-        <title>Tasks manager</title>
-    </head>
-    <body>
-        <div class='app-container d-flex align-items-center justify-content-center flex-column' ng-app="todo" ng-controller="mainController">
-            <header>
-                <h3>Todo App</h3>
-            </header>
-            <main class='row d-flex justify-content-center container'>
-                <div class="col-md-12">
-                    <div class="card-hover-shadow-2x mb-3 card">
-                        <div class="card-header-tab card-header">
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i class="fa fa-battery-empty"></i>&nbsp;Todo</div>
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i class="fa fa-battery-quarter"></i>&nbsp;Doing</div>
-                            <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i class="fa fa-battery-full"></i>&nbsp;Done</div>
-                        </div>
-                        <div class="scroll-area-sm">
-                            <div class="ps-show-limits">
-                                <div style="position: static;" class="ps ps--active-y">
-                                    <div class="ps-content">
-                                        <ul class="list-group list-group-flush">
-                                            <li class='list-group-item'>
-                                                <div ng-repeat="task in todoTasks" class='task'>
-                                                    <div class="todo-indicator bg-warning"></div>
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-wrapper">
-                                                            <div class="widget-content-left">
-                                                                <div class="widget-heading">{{ task.name }}</div>
-                                                            </div>
-                                                            <div class="widget-content-right">
-                                                                <button class="border-0 btn-transition btn btn-outline-success" ng-click="changeStatus(task, 1)"> <i class="fa fa-play"></i></button>
-                                                                <button class="border-0 btn-transition btn btn-outline-success" data-toggle="modal" data-target="#modalEdit" ng-click="startEdit(task)"> <i class="fa fa-pencil-square-o"></i></button>
-                                                                <button class="border-0 btn-transition btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete" ng-click="chooseCurrentTask(task)"> <i class="fa fa-trash"></i> </button>
-                                                            </div>
-                                                        </div>
+<head>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Tasks manager</title>
+</head>
+<body>
+<div class='app-container d-flex align-items-center justify-content-center flex-column' ng-app="todo"
+     ng-controller="mainController">
+    <header>
+        <h3>Todo App</h3>
+    </header>
+    <main class='row d-flex justify-content-center container'>
+        <div class="col-md-12">
+            <div class="card-hover-shadow-2x mb-3 card">
+                <div class="card-header-tab card-header">
+                    <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+                            class="fa fa-battery-empty"></i>&nbsp;Todo
+                    </div>
+                    <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+                            class="fa fa-battery-quarter"></i>&nbsp;Doing
+                    </div>
+                    <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><i
+                            class="fa fa-battery-full"></i>&nbsp;Done
+                    </div>
+                </div>
+                <div class="scroll-area-sm">
+                    <div class="ps-show-limits">
+                        <div style="position: static;" class="ps ps--active-y">
+                            <div class="ps-content">
+                                <ul class="list-group list-group-flush">
+                                    <li class='list-group-item'>
+                                        <div ng-repeat="task in todoTasks" class='task'>
+                                            <div class="todo-indicator bg-warning"></div>
+                                            <div class="widget-content p-0">
+                                                <div class="widget-content-wrapper">
+                                                    <div class="widget-content-left">
+                                                        <div class="widget-heading">{{ task.name }}</div>
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <button class="border-0 btn-transition btn btn-outline-success"
+                                                                ng-click="changeStatus(task, 1)"><i
+                                                                class="fa fa-play"></i></button>
+                                                        <button class="border-0 btn-transition btn btn-outline-success"
+                                                                data-toggle="modal" data-target="#modalEdit"
+                                                                ng-click="startEdit(task)"><i
+                                                                class="fa fa-pencil-square-o"></i></button>
+                                                        <button class="border-0 btn-transition btn btn-outline-danger"
+                                                                data-toggle="modal" data-target="#modalDelete"
+                                                                ng-click="chooseCurrentTask(task)"><i
+                                                                class="fa fa-trash"></i></button>
                                                     </div>
                                                 </div>
-                                            </li>
-                                            <li class='list-group-item'>
-                                                <div ng-repeat="task in doingTasks" class='task'>
-                                                    <div class="todo-indicator bg-success"></div>
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-wrapper">
-                                                            <div class="widget-content-left flex2">
-                                                                <div class="widget-heading">{{ task.name }}</div>
-                                                            </div>
-                                                            <div class="widget-content-right">
-                                                                <button class="border-0 btn-transition btn btn-outline-success" ng-click="changeStatus(task, 2)"> <i class="fa fa-check-circle"></i></button>
-                                                                <button class="border-0 btn-transition btn btn-outline-success" data-toggle="modal" data-target="#modalEdit" ng-click="startEdit(task)"> <i class="fa fa-pencil-square-o"></i></button>
-                                                                <button class="border-0 btn-transition btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete" ng-click="chooseCurrentTask(task)"> <i class="fa fa-trash"></i> </button>
-                                                            </div>
-                                                        </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class='list-group-item'>
+                                        <div ng-repeat="task in doingTasks" class='task'>
+                                            <div class="todo-indicator bg-success"></div>
+                                            <div class="widget-content p-0">
+                                                <div class="widget-content-wrapper">
+                                                    <div class="widget-content-left flex2">
+                                                        <div class="widget-heading">{{ task.name }}</div>
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <button class="border-0 btn-transition btn btn-outline-success"
+                                                                ng-click="changeStatus(task, 2)"><i
+                                                                class="fa fa-check-circle"></i></button>
+                                                        <button class="border-0 btn-transition btn btn-outline-success"
+                                                                data-toggle="modal" data-target="#modalEdit"
+                                                                ng-click="startEdit(task)"><i
+                                                                class="fa fa-pencil-square-o"></i></button>
+                                                        <button class="border-0 btn-transition btn btn-outline-danger"
+                                                                data-toggle="modal" data-target="#modalDelete"
+                                                                ng-click="chooseCurrentTask(task)"><i
+                                                                class="fa fa-trash"></i></button>
                                                     </div>
                                                 </div>
-                                            </li>
-                                            <li class='list-group-item'>
-                                                <div ng-repeat="task in doneTasks" class='task'>
-                                                    <div class="todo-indicator bg-primary"></div>
-                                                    <div class="widget-content p-0">
-                                                        <div class="widget-content-wrapper">
-                                                            <div class="widget-content-left flex2">
-                                                                <div class="widget-heading">{{ task.name }}</div>
-                                                            </div>
-                                                            <div class="widget-content-right">
-                                                                <button class="border-0 btn-transition btn btn-outline-success" data-toggle="modal" data-target="#modalEdit" ng-click="startEdit(task)"> <i class="fa fa-pencil-square-o"></i></button>
-                                                                <button class="border-0 btn-transition btn btn-outline-danger" data-toggle="modal" data-target="#modalDelete" ng-click="chooseCurrentTask(task)"> <i class="fa fa-trash"></i> </button>
-                                                            </div>
-                                                        </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class='list-group-item'>
+                                        <div ng-repeat="task in doneTasks" class='task'>
+                                            <div class="todo-indicator bg-primary"></div>
+                                            <div class="widget-content p-0">
+                                                <div class="widget-content-wrapper">
+                                                    <div class="widget-content-left flex2">
+                                                        <div class="widget-heading">{{ task.name }}</div>
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <button class="border-0 btn-transition btn btn-outline-success"
+                                                                data-toggle="modal" data-target="#modalEdit"
+                                                                ng-click="startEdit(task)"><i
+                                                                class="fa fa-pencil-square-o"></i></button>
+                                                        <button class="border-0 btn-transition btn btn-outline-danger"
+                                                                data-toggle="modal" data-target="#modalDelete"
+                                                                ng-click="chooseCurrentTask(task)"><i
+                                                                class="fa fa-trash"></i></button>
                                                     </div>
                                                 </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="d-block text-right card-footer">
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalAdd">Add Task</button>
-                        </div>
                     </div>
                 </div>
-            </main>
-            <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAddLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalAddLabel">Add task</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <input ng-model="createTodoTaskName" type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter a task here"/>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" ng-click="addTask()" data-dismiss="modal">Add</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalDeleteLabel">Delete task</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" ng-click="delete()" data-dismiss="modal">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalEditLabel">Edit task</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <input ng-model="currentTask.name" type="text" class="form-control" placeholder="Enter a task here"/>
-                            <div class='comments-wrapper'>
-                                <div class='comments'>
-                                    <div ng-repeat="comment in comments" class='comment'>
-                                        <span class='text'>{{ comment.text }}</span>
-                                        <span class='date'>{{ comment.created | date: 'medium' }}</span>
-                                    </div>
-                                </div>
-                                <div class='add-comment'>
-                                    <textarea ng-model="createCommentText" class="form-control" placeholder="Enter a comment here"></textarea>
-                                    <button type="button" class="btn btn-primary" ng-click="addComment()">Add comment</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" ng-click="update()" data-dismiss="modal">Save</button>
-                        </div>
-                    </div>
+                <div class="d-block text-right card-footer">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalAdd">Add Task</button>
                 </div>
             </div>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="./js/script.js"></script>
-    </body>
+    </main>
+    <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalAddLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAddLabel">Add task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input ng-model="createTodoTaskName" type="text" class="form-control" id="formGroupExampleInput"
+                           placeholder="Enter a task here"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="addTask()" data-dismiss="modal">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDeleteLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalDeleteLabel">Delete task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="delete()" data-dismiss="modal">Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditLabel">Edit task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input ng-model="currentTask.name" type="text" class="form-control"
+                           placeholder="Enter a task here"/>
+                    <div class='comments-wrapper'>
+                        <div class='comments'>
+                            <div ng-repeat="comment in comments" class='comment'>
+                                <span class='text'>{{ comment.text }}</span>
+                                <span class='date'>{{ comment.created | date: 'medium' }}</span>
+                            </div>
+                        </div>
+                        <div class='add-comment'>
+                            <textarea ng-model="createCommentText" class="form-control"
+                                      placeholder="Enter a comment here"></textarea>
+                            <button type="button" class="btn btn-primary" ng-click="addComment()">Add comment</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="update()" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="./js/script.js"></script>
+</body>
 </html>
